@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongo:27017/legalassist-ai
+      - JWT_SECRET=your-super-secret-jwt-key-here-change-in-production
+      - CORS_ORIGIN=http://localhost:3000
+      - APP_ENV=development
+    depends_on:
+      - mongo
+    volumes:
+      - ./.env:/root/.env
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=legalassist-ai
+
+volumes:
+  mongo_data:
